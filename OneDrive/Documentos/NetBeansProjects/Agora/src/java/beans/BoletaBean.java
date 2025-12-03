@@ -8,8 +8,8 @@ import dao.BoletaDAO;
 import dao.EventoDAO;
 import java.util.ArrayList;
 import java.util.List;
-import javax.enterprise.context.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import modelo.Boleta;
 import modelo.Evento;
 
@@ -18,13 +18,17 @@ import modelo.Evento;
  * @author marce
  */
 @ManagedBean
-@ApplicationScoped
+@SessionScoped
 public class BoletaBean {
     Boleta boleta = new Boleta();
     List<Boleta> lstBole = new ArrayList<>();
     List<Boleta> lstBoleFiltered = new ArrayList<>();
     List<Evento> lstEven = new ArrayList<>();
     BoletaDAO boleDAO = new BoletaDAO();
+    
+    public void nuevaBoleta(){
+        boleta = new Boleta();
+    }
 
 
     public Boleta getBoleta() {
@@ -69,19 +73,28 @@ public class BoletaBean {
         lstEven = evenDAO.listar();
     }
     
+    public void nuevoBoleta(){
+        boleta = new Boleta();
+    }
+    
     public void guardar (){
         boleDAO.guardar(boleta);
+        listar();
     }
     
     public void buscar (int id_boleta){
         boleta = boleDAO.buscar(id_boleta);
     }
     
-    public void actualizar (){
+    public String actualizar (){
         boleDAO.actualizar(boleta);
+        listar();
+        return "index?faces-redirect=true";
     }
     
-    public void eliminar (int id_boleta){
+    public String eliminar(int id_boleta){
         boleDAO.eliminar(id_boleta);
+        listar();
+        return "index?faces-redirect=true";
     }
 }

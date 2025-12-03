@@ -86,8 +86,8 @@
                     <h:commandLink value="Editar" class="text-success"  
                                    actionListener="#{eventoBean.buscar(evento.id_evento)}" action="editar" />
                     <h:commandLink value="Eliminar" class="text-danger" style="margin-left: 15px;" 
-                                   actionListener="#{eventoBean.eliminar(evento.id_evento)}" 
-                                   onclick="return confirm('Está seguro de ELIMINAR el Evento #{evento.nombre_evento} ??!!');" />
+                                   action="#{eventoBean.eliminar(evento.id_evento)}" 
+                                   onclick="return confirm('¿Está seguro de ELIMINAR el Evento #{evento.nombre_evento}?');" />
                 </h:column>
             </h:dataTable>            
         </h:form>            

@@ -11,6 +11,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import modelo.Boleta;
+import modelo.Evento;
+import modelo.Usuario;
 
 /**
  *
@@ -42,6 +44,18 @@ public class BoletaDAO {
                 bole.setId(rs.getInt("id"));
                 bole.setId_evento(rs.getInt("id_evento"));
                 
+                // Cargar el objeto Evento completo
+                Evento evento = evenDAO.buscar(rs.getInt("id_evento"));
+                if (evento != null) {
+                    bole.setEven(evento);
+                }
+                
+                // Cargar el objeto Usuario completo
+                Usuario usuario = usuaDAO.buscar(rs.getInt("id"));
+                if (usuario != null) {
+                    bole.setUsuario(usuario);
+                }
+                
                 listaBole.add(bole);
             }
                     
@@ -51,16 +65,15 @@ public class BoletaDAO {
     }
     public void guardar (Boleta bole){
         try{
-            String sql = "INSERT INTO boleta VALUES (null, ?, ?, ?, ?";
+            String sql = "INSERT INTO boleta VALUES (null, ?, ?, ?, ?)";
             ps = con.prepareStatement(sql);
             
-            ps.setInt(1, bole.getId_boleta());
-            ps.setDouble(2, bole.getPrecio_boleta());
-            ps.setInt(3, bole.getCantidad_boletos());
-            ps.setInt(4, bole.getId());
-            ps.setInt(5, bole.getId_evento());
+            ps.setDouble(1, bole.getPrecio_boleta());
+            ps.setInt(2, bole.getCantidad_boletos());
+            ps.setInt(3, bole.getId());
+            ps.setInt(4, bole.getId_evento());
             
-            ps.executeQuery();
+            ps.executeUpdate();
         }catch (SQLException e){
             
         }
@@ -80,8 +93,20 @@ public class BoletaDAO {
                 bole.setId_boleta(rs.getInt("id_boleta"));
                 bole.setPrecio_boleta(rs.getDouble("precio_boleta"));
                 bole.setCantidad_boletos(rs.getInt("cantidad_boletos"));
-                bole.setId(usuaDAO.buscar(rs.getInt("id")));
-                bole.setId_evento(evenDAO.buscar(rs.getInt("id_evento")));
+                bole.setId(rs.getInt("id"));
+                bole.setId_evento(rs.getInt("id_evento"));
+                
+                // Cargar el objeto Evento completo
+                Evento evento = evenDAO.buscar(rs.getInt("id_evento"));
+                if (evento != null) {
+                    bole.setEven(evento);
+                }
+                
+                // Cargar el objeto Usuario completo
+                Usuario usuario = usuaDAO.buscar(rs.getInt("id"));
+                if (usuario != null) {
+                    bole.setUsuario(usuario);
+                }
                 
                 return bole;
             }else{
@@ -94,14 +119,14 @@ public class BoletaDAO {
     
     public void actualizar (Boleta bole) {
         try {
-            String sql = "UPDATE boleta SET precio_boleta = ?"
-                    + "cantidad_boletos = ?, id = ?, id_evento_id WHERE id_boleta = ?";
+            String sql = "UPDATE boleta SET precio_boleta = ?, "
+                    + "cantidad_boletos = ?, id = ?, id_evento = ? WHERE id_boleta = ?";
             ps = con.prepareStatement(sql);
-            ps.setInt(1, bole.getId_boleta());
-            ps.setDouble(2, bole.getPrecio_boleta());
-            ps.setInt(3, bole.getCantidad_boletos());
-            ps.setInt(4, bole.getId());
-            ps.setInt(5, bole.getId_evento());
+            ps.setDouble(1, bole.getPrecio_boleta());
+            ps.setInt(2, bole.getCantidad_boletos());
+            ps.setInt(3, bole.getId());
+            ps.setInt(4, bole.getId_evento());
+            ps.setInt(5, bole.getId_boleta());
             
             ps.executeUpdate();
         }catch (SQLException e){

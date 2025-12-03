@@ -12,6 +12,7 @@ public class Boleta {
     private int id_boleta, cantidad_boletos, id, id_evento;
     private double precio_boleta;
     private Evento even;
+    private Usuario usuario;
 
     public int getId_boleta() {
         return id_boleta;
@@ -60,7 +61,12 @@ public class Boleta {
     public void setEven(Evento even) {
         this.even = even;
     }
-    
-    
-    
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
 }

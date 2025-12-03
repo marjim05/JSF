@@ -19,6 +19,18 @@
         </session-timeout>
     </session-config>
     <welcome-file-list>
+        <welcome-file>faces/login.xhtml</welcome-file>
         <welcome-file>faces/index.xhtml</welcome-file>
     </welcome-file-list>
+    
+    <!-- Configuración del filtro de sesión -->
+    <filter>
+        <filter-name>FiltroSesion</filter-name>
+        <filter-class>filtro.FiltroSesion</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>FiltroSesion</filter-name>
+        <url-pattern>/faces/evento/*</url-pattern>
+        <url-pattern>/faces/boleta/*</url-pattern>
+    </filter-mapping>
 </web-app>

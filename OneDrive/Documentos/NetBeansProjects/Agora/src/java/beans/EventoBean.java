@@ -10,13 +10,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Time;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import javax.enterprise.context.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.Part;
 import modelo.Evento;
@@ -26,7 +24,7 @@ import modelo.Evento;
  * @author marce
  */
 @ManagedBean
-@ApplicationScoped
+@SessionScoped
 public class EventoBean {
     Evento evento = new Evento();
     List<Evento> lstEvento = new ArrayList<>();
@@ -42,7 +40,7 @@ public class EventoBean {
         imagen = null;
     }
     
-    public void guardar(){
+    public String guardar(){
         try {
             String path = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/");
             
@@ -67,15 +65,17 @@ public class EventoBean {
             evento.setImagen("../ImgEventos/" + f.getName());
             
             eventoDAO.guardar(evento);
+            listar();
         } catch (IOException e){
         }
+        return "index?faces-redirect=true";
     }
     
     public void buscar (int id_evento){
         evento = eventoDAO.buscar(id_evento);
     }
     
-    public void actualizar(){
+    public String actualizar(){
         if(imagen != null){
             try {
                 String path = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/");
@@ -103,10 +103,14 @@ public class EventoBean {
             }
         }
         eventoDAO.actualizar(evento);
+        listar();
+        return "index?faces-redirect=true";
     }
     
-    public void eliminar( int id_evento){
+    public String eliminar(int id_evento){
         eventoDAO.eliminar(id_evento);
+        listar();
+        return "index?faces-redirect=true";
     }
     
     
