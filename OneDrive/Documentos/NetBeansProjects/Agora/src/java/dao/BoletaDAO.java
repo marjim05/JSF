@@ -143,5 +143,22 @@ public class BoletaDAO {
         }catch (SQLException e){
         }
     }
+    
+        public int obtenerBoletasVendidas (int id_evento){
+        int total = 0;
+        try {
+            String sql = "SELECT SUM (cantidad_boletos) FROM boleta WHERE id_evento = ?";
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, id_evento);
+            rs = ps.executeQuery();
+            
+            if(rs.next()){
+                total = rs.getInt(1);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return total;
+    }
 }
 

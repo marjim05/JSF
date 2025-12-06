@@ -13,6 +13,7 @@ import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -42,6 +43,27 @@ public class EventoBean {
     
     public String guardar(){
         try {
+            //Validación capacidad establecimiento
+            int capacidadEstablecimiento = 50;
+            if (evento.getCapacidad_maxima() > capacidadEstablecimiento){
+                FacesMessage msg = new FacesMessage (
+                FacesMessage.SEVERITY_ERROR,
+                "Capacidad del establecimeinto superada. Capacidad" + capacidadEstablecimiento , null);
+                FacesContext.getCurrentInstance().addMessage(null, msg);
+                return null;
+            }
+            
+            //Validación de fecha
+            Date hoy = new Date();
+            if (evento.getFecha().before(hoy)){
+                FacesMessage msg = new FacesMessage (
+                FacesMessage.SEVERITY_ERROR,
+                "La fecha no puede ser pasada.", null);
+                FacesContext.getCurrentInstance().addMessage(null, msg);
+                return null;
+            }
+            
+            //Control de la imagen
             String path = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/");
             
             InputStream in = imagen.getInputStream();
@@ -71,11 +93,37 @@ public class EventoBean {
         return "index?faces-redirect=true";
     }
     
+    
+    
     public void buscar (int id_evento){
         evento = eventoDAO.buscar(id_evento);
     }
     
+    
+    
     public String actualizar(){
+        //Validación capacidad establecimiento
+        int capacidadEstablecimiento = 50;
+        if (evento.getCapacidad_maxima() > capacidadEstablecimiento){
+            FacesMessage msg = new FacesMessage (
+            FacesMessage.SEVERITY_ERROR,
+            "Capacidad del establecimeinto superada. Capacidad" + capacidadEstablecimiento , null);
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            return null;
+        }
+        
+        //Validación de fecha 
+        Date hoy = new Date();
+        if(evento.getFecha().before(hoy)){
+            FacesMessage msg = new FacesMessage(
+                    FacesMessage.SEVERITY_ERROR,
+                    "La fecha no puede ser pasada", null
+            );
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            return null;
+        }
+        
+        //Control de imagen
         if(imagen != null){
             try {
                 String path = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/");
@@ -106,6 +154,8 @@ public class EventoBean {
         listar();
         return "index?faces-redirect=true";
     }
+    
+    
     
     public String eliminar(int id_evento){
         eventoDAO.eliminar(id_evento);
