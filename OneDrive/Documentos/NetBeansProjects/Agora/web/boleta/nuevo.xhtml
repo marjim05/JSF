@@ -18,9 +18,8 @@
                     
                     <h:outputLabel value="Precio: " for="precio" />
                     <h:inputText id="precio" value="#{boletaBean.boleta.precio_boleta}" class="form-control"
-                                 required="true" requiredMessage="Debe especificar un Precio">
-                        <f:convertNumber pattern="#,##0.00" />
-                    </h:inputText>
+                                 required="true" requiredMessage="Debe especificar un Precio"
+                                 readonly="true"                   />     
                     <h:message for="precio" class="text-danger" />
                     
                     <h:outputLabel value="Cantidad de Boletos: " for="cantidad" />
@@ -39,6 +38,8 @@
                         <f:selectItem itemLabel="Seleccione un evento..." itemValue="" />
                         <f:selectItems value="#{boletaBean.lstEven}" var="evento" 
                                       itemLabel="#{evento.nombre_evento}" itemValue="#{evento.id_evento}" />
+                                      <f:ajax listener="#{boletaBean.cargarPrecioEvento}" render="precio"/>
+                                      
                     </h:selectOneMenu>
                     <h:message for="evento" class="text-danger" />
                     

@@ -20,3 +20,5 @@ INSERT INTO usuario (nombre, email, password, rol)
 VALUES ('Usuario Test', 'usuario@agora.com', 'usuario', 'usuario')
 ON DUPLICATE KEY UPDATE nombre=nombre;
 
+
+
