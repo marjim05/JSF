@@ -8,8 +8,9 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous"/>
     </h:head>
     <h:body>
-        <f:event type="preRenderView" listener="#{boletaBean.listar()}" />
-        <f:event type="preRenderView" listener="#{boletaBean.listarEven()}" />
+        <f:metadata>
+            <f:event type="preRenderView" listener="#{boletaBean.listar}"/>
+        </f:metadata>
         <h2 class="text-center text-primary">Administrar Boletas</h2>
         <h:form>
             <h:commandLink value="Nueva Boleta" class="text-primary" action="nuevo" />
@@ -45,14 +46,14 @@
                     <f:facet name="header">
                         <h:outputLabel value="Usuario" />
                     </f:facet>
-                    <h:outputText value="#{boleta.usuario != null ? boleta.usuario.nombre : 'N/A'}" />
+                    <h:outputText value="#{boletaBean.usuarioNombre}" />
                 </h:column>
                 
                 <h:column>
                     <f:facet name="header">
                         <h:outputLabel value="Evento" />
                     </f:facet>
-                    <h:outputText value="#{boleta.even != null ? boleta.even.nombre_evento : 'N/A'}" />
+                    <h:outputText value="#{boleta.even.nombre_evento}" />
                 </h:column>
                 
                 <h:column>
