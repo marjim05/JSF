@@ -63,6 +63,45 @@ public class BoletaDAO {
                     }
             return listaBole;
     }
+    
+    
+public List<Boleta> listarPorUsuario(int idUsuario) {
+    List<Boleta> lista = new ArrayList<>();
+
+    try {
+        String sql = "SELECT b.*, e.nombre_evento "
+                   + "FROM boleta b "
+                   + "INNER JOIN evento e ON b.id_evento = e.id_evento "
+                   + "WHERE b.id = ?";
+        
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setInt(1, idUsuario);
+        ResultSet rs = ps.executeQuery();
+
+        while (rs.next()) {
+            Boleta b = new Boleta();
+            b.setId_boleta(rs.getInt("id_boleta"));
+            b.setId(rs.getInt("id"));
+            b.setId_evento(rs.getInt("id_evento"));
+            b.setPrecio_boleta(rs.getInt("precio_boleta"));
+            b.setCantidad_boletos(rs.getInt("cantidad_boletos"));
+
+            Evento ev = new Evento();
+            ev.setNombre_evento(rs.getString("nombre_evento"));
+
+            b.setEven(ev); 
+
+            lista.add(b);
+        }
+    } catch (Exception e) {
+        System.out.println("Error listarPorUsuario: " + e.getMessage());
+    }
+
+    return lista;
+}
+
+    
+    
     public void guardar (Boleta bole){
         try{
             String sql = "INSERT INTO boleta VALUES (null, ?, ?, ?, ?)";
